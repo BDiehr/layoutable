@@ -1,16 +1,16 @@
-import connectToStores from 'alt/utils/connectToStores';
 import _ from 'lodash';
-import LayoutStore from '../../../../stores/LayoutStore';
 import React, { Component, PropTypes} from 'react';
 import classNames from 'classnames';
 import LayoutActions from '../../../../actions/LayoutActions';
 import HoverButtons from './../../core/hoverButtons/index';
 import InternalItem from './internalItem';
 import './item.scss';
+import layoutItem from './layoutItem';
 
-@connectToStores
+@layoutItem
 class Item extends Component {
   static propTypes = {
+    isSelected: PropTypes.func.isRequired,
     connectDropTarget: PropTypes.func.isRequired,
     isOver: PropTypes.bool.isRequired,
     canDrop: PropTypes.bool.isRequired,
@@ -41,10 +41,6 @@ class Item extends Component {
     },
   };
 
-  componentWillMount() {
-    LayoutActions.addItem({ id: this.props.id, parentId: this.props.parentId });
-  }
-
   componentDidUpdate(prevProps, prevState) {
     /** Handle registered hover map */
     if (prevState.hover !== this.state.hover) {
@@ -52,7 +48,7 @@ class Item extends Component {
       if (registerHoveredState) registerHoveredState(id, this.state.hover);
     }
     /** Handle change in selected Style */
-    if (this.isSelected() && !_.isEqual(this.state.style, this.props.selectedStyle)) {
+    if (this.props.isSelected() && !_.isEqual(this.state.style, this.props.selectedStyle)) {
       // TODO: Change this implementation not to set in `componentDidUpdate`.
       this.setState({style: this.props.selectedStyle});
     }
@@ -72,14 +68,6 @@ class Item extends Component {
     }
   };
 
-  static getStores() {
-    return [LayoutStore];
-  }
-
-  static getPropsFromStores() {
-    return LayoutStore.getState();
-  }
-
   isLeafNodeAndHovered() {
     /** Determine if we should show the utility buttons */
     const iteratorOfChildHoverStates = this.state.childHoverStates.values();
@@ -91,10 +79,6 @@ class Item extends Component {
       }
     }
     return this.state.hover && !hasHoveredChild;
-  }
-
-  isSelected() {
-    return this.props.selectedId != null && this.props.id === this.props.selectedId;
   }
 
   childHoverStateRegistration = (id, state) => {
@@ -148,7 +132,7 @@ class Item extends Component {
   render() {
     const style = this.state.style;
     const containerClasses = classNames('layout-item-container', {
-      'layout-item-container--selected': this.isSelected(),
+      'layout-item-container--selected': this.props.isSelected(),
     });
 
     return (

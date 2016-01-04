@@ -3,8 +3,8 @@ import './hoverButtons.scss';
 
 export default class HoverButtons extends Component {
   static propTypes = {
-    addChild: PropTypes.func.isRequired,
-    removeChild: PropTypes.func.isRequired,
+    addChild: PropTypes.func,
+    removeChild: PropTypes.func,
   };
 
   render() {
