@@ -1,0 +1,15 @@
+.layout-container {
+  padding: 0 2em;
+  height: 600px;
+  border: #e4e4e4 8px solid;
+  width: 100%;
+  display: flex;
+}
+
+.layout-viewport {
+  margin: 1em 0 0 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: #e4e4e4;
+}

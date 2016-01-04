@@ -1,0 +1,35 @@
+$button-spacing: 0.2em;
+
+.hover-buttons-container {
+  position: relative;
+}
+
+.hover-buttons {
+  margin: 0.2em;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: $button-spacing;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  &:hover {
+    opacity: 1;
+    transition: opacity 0.2s;
+  }
+}
+
+.hover-button {
+  margin: 0.2em $button-spacing 0.2em 0;
+  font-size: 0.7em;
+  padding: 0.2em;
+  background: #d5d5d5;
+  border: gray 2px;
+  font-weight: bold;
+  width: 40px;
+  height: 25px;
+
+  &:hover {
+    background: gray;
+    color: white;
+  }
+}
