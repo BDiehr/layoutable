@@ -22,6 +22,11 @@ function layoutItem(Spec, ReactComponent = Spec) {
       return LayoutStore.getState();
     }
 
+    removeChild = () => {
+      const markToDelete = this.props.markToDelete;
+      if (markToDelete) markToDelete();
+    };
+
     componentWillMount() {
       LayoutActions.addItem({ id: this.props.id, parentId: this.props.parentId });
     }
@@ -31,7 +36,7 @@ function layoutItem(Spec, ReactComponent = Spec) {
     };
 
     render() {
-      return <ReactComponent isSelected={this.isSelected} {...this.props} />;
+      return <ReactComponent removeChild={this.removeChild} isSelected={this.isSelected} {...this.props} />;
     }
   }
 

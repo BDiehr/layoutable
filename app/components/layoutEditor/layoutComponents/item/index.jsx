@@ -122,11 +122,6 @@ class Item extends Component {
     this.selectItem();
     const childComponents = this.state.childComponents;
     this.setState({ childComponents: childComponents.concat(component) });
-};
-
-  removeChild = () => {
-    const markToDelete = this.props.markToDelete;
-    if (markToDelete) markToDelete();
   };
 
   render() {
@@ -143,7 +138,7 @@ class Item extends Component {
         {this.isLeafNodeAndHovered() ? (
           <HoverButtons
             addChild={this.addChild}
-            removeChild={this.props.id !== 'root' ? this.removeChild : undefined}
+            removeChild={this.props.id !== 'root' ? this.props.removeChild : undefined}
             />
         ) : null}
         <InternalItem
