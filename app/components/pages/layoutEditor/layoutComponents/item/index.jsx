@@ -4,7 +4,7 @@ import LayoutStore from '../../../../../stores/LayoutStore';
 import React, { Component, PropTypes} from 'react';
 import classNames from 'classnames';
 import LayoutActions from '../../../../../actions/LayoutActions';
-import HoverButtons from './hoverButtons';
+import HoverButtons from './../../core/hoverButtons/index';
 import InternalItem from './internalItem';
 import './item.scss';
 
@@ -160,8 +160,7 @@ class Item extends Component {
         {this.isLeafNodeAndHovered() ? (
           <HoverButtons
             addChild={this.addChild}
-            removeChild={this.removeChild}
-            isRoot={this.props.id === 'root'}
+            removeChild={this.props.id !== 'root' ? this.removeChild : undefined}
             />
         ) : null}
         <InternalItem
