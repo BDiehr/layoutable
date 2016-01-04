@@ -4,11 +4,7 @@ import TreeModel from 'tree-model';
 import Immutable from 'immutable';
 const treeModel = new TreeModel();
 
-function idEq(id) {
-  return function (node) {
-    return node.model.id === id;
-  };
-}
+const idEq = (id) => (node) => node.model.id === id;
 
 class LayoutStore {
   constructor() {
@@ -73,7 +69,6 @@ class LayoutStore {
       const nodeId = node.model.id;
       updatedMap = updatedMap.delete(nodeId);
     });
-    console.log(this.state.HTMLTree);
     this.setState({
       styleMap: updatedMap,
       HTMLTree: this.state.HTMLTree,

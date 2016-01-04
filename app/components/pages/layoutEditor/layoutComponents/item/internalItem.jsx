@@ -7,7 +7,7 @@ const boxTarget = {
     const hasDroppedOnChild = monitor.didDrop();
     if (hasDroppedOnChild) return;
     return { id: props.id, addChild: props.addChild, addComponent: props.addComponent };
-  }
+  },
 };
 
 @DropTarget('ITEM', boxTarget, (connect, monitor) => ({

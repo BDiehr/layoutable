@@ -3,24 +3,25 @@ import Highlight from 'react-highlight';
 import 'highlight.js/styles/darkula.css';
 
 function tabs(n) {
-  let tabs = '';
-  for(let i = 0; i < n +1; i++) {
-    tabs = tabs + '\t';
+  let tabsToAdd = '';
+  for (let i = 0; i < n + 1; i++) {
+    tabsToAdd = tabsToAdd + '\t';
   }
-  return tabs;
+  return tabsToAdd;
 }
-function HTMLWalk(node, depth = 0) {
+
+function walkHTML(node, depth = 0) {
   if (node.children.length > 0) {
     return (
 `${tabs(depth)}<div class="item ${node.model.id}">
   ${node.children
-    .map(node => HTMLWalk(node, depth + 1))
+    .map(childNode => walkHTML(childNode, depth + 1))
     .reduce((a, b) => `${a}\n${b}`)
   }
 ${tabs(depth)}</div>`
     );
   } else {
-    return `${tabs(depth)}<div class="item ${node.model.id}"></div>`
+    return `${tabs(depth)}<div class="item ${node.model.id}"></div>`;
   }
 }
 
@@ -31,8 +32,8 @@ export default class HTMLViewer extends Component {
 
   getPrettyHTML() {
     const HTMLTree = this.props.HTMLTree;
-    if (HTMLTree != null)  {
-      return `<div class="container">\n${HTMLWalk(HTMLTree)}\n</div>`;
+    if (HTMLTree != null) {
+      return `<div class="container">\n${walkHTML(HTMLTree)}\n</div>`;
     }
 
     return `<div class="container"><div class="item root" \></div>`;

@@ -53,7 +53,7 @@ export default class CodeViewer extends Component {
       const cssStyle = JSON.stringify(styleObj, null, 4)
         .replace(/"/g, '')
         .replace(/,/g, ';')
-        .replace(/}([^}]*)$/,'$1')
+        .replace(/}([^}]*)$/, '$1')
         .replace('{', '')
         .replace(':', '')
         .slice(0, -7)

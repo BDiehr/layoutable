@@ -135,7 +135,6 @@ class Item extends Component {
   };
 
   addComponent = (component) => {
-    console.log('adding compoentn!: ', component);
     this.selectItem();
     const childComponents = this.state.childComponents;
     this.setState({ childComponents: childComponents.concat(component) });
