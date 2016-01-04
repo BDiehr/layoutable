@@ -39,7 +39,7 @@ class LayoutEditor extends Component {
 
   getCounter = () => {
     const counter = this.state.counter;
-    this.setState({counter: counter + 1 });
+    this.setState({ counter: counter + 1 });
     return counter;
   };
 
@@ -47,8 +47,6 @@ class LayoutEditor extends Component {
     return (
       <div>
         <div className="body">
-          <h3 className="text-center">Flex Box Editor</h3>
-          <hr />
           <div className="directions">
             <h4>Directions</h4>
             <ol>
