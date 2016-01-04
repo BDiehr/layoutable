@@ -27,7 +27,6 @@ class InternalItem extends Component {
     number: PropTypes.number,
     id: PropTypes.string.isRequired,
     getCounter: PropTypes.func.isRequired,
-    incrementCounter: PropTypes.func.isRequired,
     addChild: PropTypes.func.isRequired,
     addComponent: PropTypes.func.isRequired,
   };
@@ -40,7 +39,6 @@ class InternalItem extends Component {
       return children.map((child, i) => React.cloneElement(child, {
         number: i,
         getCounter: this.props.getCounter,
-        incrementCounter: this.props.incrementCounter,
       }));
     }
   }

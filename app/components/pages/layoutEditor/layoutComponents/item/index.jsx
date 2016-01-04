@@ -121,7 +121,6 @@ class Item extends Component {
     this.selectItem();
     const childItems = this.state.childItems;
     const itemId = `item-depth-${this.props.depth + 1}-num-${this.props.getCounter()}`;
-    this.props.incrementCounter();
     const newItem = (
       <Item
         key={itemId}
@@ -172,7 +171,6 @@ class Item extends Component {
           id={this.props.id}
           style={style}
           getCounter={this.props.getCounter}
-          incrementCounter={this.props.incrementCounter}
           childComponents={this.state.childComponents}
           >
           {this.state.childItems}

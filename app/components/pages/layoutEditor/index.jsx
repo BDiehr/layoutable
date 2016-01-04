@@ -38,11 +38,9 @@ class LayoutEditor extends Component {
   }
 
   getCounter = () => {
-    return this.state.counter;
-  };
-
-  incrementCounter = () => {
-    this.setState({ counter: this.state.counter + 1 });
+    const counter = this.state.counter;
+    this.setState({counter: counter + 1 });
+    return counter;
   };
 
   render() {
@@ -60,7 +58,7 @@ class LayoutEditor extends Component {
           </div>
           <Container>
             <DragMenu />
-            <Item getCounter={this.getCounter} incrementCounter={this.incrementCounter} number={1} id="root" depth={0}/>
+            <Item getCounter={this.getCounter} number={1} id="root" depth={0}/>
           </Container>
           <DetailPane {...this.props} />
           <CodeViewer
