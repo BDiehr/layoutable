@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
-import LayoutActions from '../../../../actions/LayoutActions';
+import LayoutActions from '../../../actions/LayoutActions';
 import { Button, Input, Tabs, Tab } from 'react-bootstrap';
 import './detailPane.scss';
 

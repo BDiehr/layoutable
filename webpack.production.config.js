@@ -11,14 +11,11 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx'],
     alias: {
-      'libs': __dirname + '/libs',
       'constants': __dirname + '/app/constants',
       'stores': __dirname + '/app/stores',
       'components': __dirname + '/app/components',
       'actions': __dirname + '/app/actions',
-      'services': __dirname + '/app/services',
       'styles': __dirname + '/app/styles',
-      'images': __dirname + '/app/images'
     }
   },
 

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Highlight from 'react-highlight';
-import 'highlight.js/styles/darkula.css';
+import '../../../../node_modules/highlight.js/styles/darkula.css';
 
 function tabs(n) {
   let tabsToAdd = '';

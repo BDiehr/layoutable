@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Highlight from 'react-highlight';
 import _ from 'lodash';
-import 'highlight.js/styles/darkula.css';
+import '../../../../node_modules/highlight.js/styles/darkula.css';
 
 export default class CodeViewer extends Component {
   static propTypes = {

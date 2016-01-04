@@ -9,6 +9,7 @@
     "IS_SERVER": false
   },
   "rules": {
-    "eqeqeq": [2, "smart"]
+    "eqeqeq": [2, "smart"],
+    "new-cap": 0
   }
 }

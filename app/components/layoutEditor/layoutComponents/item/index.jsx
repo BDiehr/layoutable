@@ -1,9 +1,9 @@
 import connectToStores from 'alt/utils/connectToStores';
 import _ from 'lodash';
-import LayoutStore from '../../../../../stores/LayoutStore';
+import LayoutStore from '../../../../stores/LayoutStore';
 import React, { Component, PropTypes} from 'react';
 import classNames from 'classnames';
-import LayoutActions from '../../../../../actions/LayoutActions';
+import LayoutActions from '../../../../actions/LayoutActions';
 import HoverButtons from './../../core/hoverButtons/index';
 import InternalItem from './internalItem';
 import './item.scss';
