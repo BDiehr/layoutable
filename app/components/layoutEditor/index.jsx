@@ -47,6 +47,8 @@ class LayoutEditor extends Component {
     return (
       <div>
         <div className="body">
+          <h1 className="text-center"><strong>Layoutable</strong></h1>
+          <hr />
           <div className="directions">
             <h4>Directions</h4>
             <ol>
