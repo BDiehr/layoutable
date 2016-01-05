@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
 import connectToStores from '../../../../node_modules/alt/utils/connectToStores';
 import LayoutStore from '../../../stores/LayoutStore';
@@ -108,23 +109,30 @@ function layoutItemCreator() {
       };
 
       render() {
+        const containerClasses = classNames('layout-item-container', {
+          'layout-item-container--selected': this.isSelected(),
+        });
+
         return (
-          <ReactComponent
-            onClick={this.onClick}
-            updateStyle={this.updateStyle}
-            addChild={this.addChild}
-            deleteChild={this.deleteChild}
-            removeChild={this.removeChild}
-            onMouseEnterHandler={this.onMouseEnterHandler}
-            onMouseLeaveHandler={this.onMouseLeaveHandler}
-            isSelected={this.isSelected()}
-            isHoveredChild={this.isHoveredChild()}
-            childHoverStateRegistration={this.childHoverStateRegistration}
-            {...this.state}
-            {...this.props}
-            >
-            {this.state.childItems}
-          </ReactComponent>
+          <div
+            onMouseEnter={this.onMouseEnterHandler}
+            onMouseLeave={this.onMouseLeaveHandler}
+            className={containerClasses}>
+            <ReactComponent
+              onClick={this.onClick}
+              updateStyle={this.updateStyle}
+              addChild={this.addChild}
+              deleteChild={this.deleteChild}
+              removeChild={this.removeChild}
+              isSelected={this.isSelected()}
+              isHoveredChild={this.isHoveredChild()}
+              childHoverStateRegistration={this.childHoverStateRegistration}
+              {...this.state}
+              {...this.props}
+              >
+              {this.state.childItems}
+            </ReactComponent>
+          </div>
         );
       }
     }
