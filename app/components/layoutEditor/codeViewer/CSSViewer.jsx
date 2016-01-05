@@ -46,7 +46,9 @@ export default class CodeViewer extends Component {
       const reactStyleObj = value;
       const stdStyleObj = {};
       for (const styleKey in reactStyleObj) {
-        stdStyleObj[_.kebabCase(styleKey)] = reactStyleObj[styleKey];
+        if (reactStyleObj.hasOwnProperty(styleKey)) {
+          stdStyleObj[_.kebabCase(styleKey)] = reactStyleObj[styleKey];
+        }
       }
       const styleObj = {};
       styleObj[`.${key}`] = stdStyleObj;

@@ -10,6 +10,8 @@
   },
   "rules": {
     "eqeqeq": [2, "smart"],
-    "new-cap": 0
+    "new-cap": 0,
+    "no-else-return": 0,
+    "padded-blocks": 0
   }
 }

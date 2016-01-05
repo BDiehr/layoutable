@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { Component, PropTypes} from 'react';
 import classNames from 'classnames';
-import LayoutActions from '../../../../actions/LayoutActions';
 import HoverButtons from './../../core/hoverButtons/index';
 import InternalItem from './internalItem';
 import './item.scss';
@@ -31,9 +30,10 @@ class Item extends Component {
     childHoverStateRegistration: PropTypes.func.isRequired,
     updateStyle: PropTypes.func.isRequired,
     onClick: PropTypes.func.isRequired,
+    style: PropTypes.object.isRequired,
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     /** Handle registered hover map */
     if (prevProps.hover !== this.props.hover) {
       const { registerHoveredState, id } = this.props;

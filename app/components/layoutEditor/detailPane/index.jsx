@@ -1,23 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import classNames from 'classnames';
 import LayoutActions from '../../../actions/LayoutActions';
 import { Button, Input, Tabs, Tab } from 'react-bootstrap';
+import StyleButton from './styleButton';
 import './detailPane.scss';
-
-const StyleButton = ({display, actionProperty, actionValue, currentValue}) => {
-  const classes = classNames('direction-btn-grp__btn', {
-    'direction-btn-grp__btn--selected': currentValue === actionValue,
-  });
-
-  return (
-    <Button
-      className={classes}
-      onClick={() => LayoutActions.updateItemProperty({ property: actionProperty, value: actionValue})}
-      >
-      {display}
-    </Button>
-  );
-};
 
 export default class DetailPane extends Component {
   static propTypes = {

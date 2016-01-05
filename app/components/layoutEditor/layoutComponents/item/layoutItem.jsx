@@ -2,11 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import connectToStores from 'alt/utils/connectToStores';
 import LayoutStore from '../../../../stores/LayoutStore';
 import LayoutActions from '../../../../actions/LayoutActions';
-import Item from './index';
 
-function layoutItemCreator(options = {}) {
+function layoutItemCreator() {
   return function layoutItem(Spec, ReactComponent = Spec) {
-
     @connectToStores
     class ItemConnection extends Component {
       static propTypes = {
@@ -14,6 +12,7 @@ function layoutItemCreator(options = {}) {
         selectedId: PropTypes.string,
         id: PropTypes.string.isRequired,
         parentId: PropTypes.string,
+        markToDelete: PropTypes.func,
       };
 
       state = {
@@ -43,9 +42,11 @@ function layoutItemCreator(options = {}) {
         this.setState({childHoverStates: newMap});
       };
 
+      /*eslint-disable*/
       onMouseEnterHandler = () => {
         this.setState({ hover: true });
       };
+      /*eslint-enable*/
 
       onMouseLeaveHandler = () => {
         this.setState({ hover: false });
@@ -128,7 +129,7 @@ function layoutItemCreator(options = {}) {
       }
     }
     return ItemConnection;
-  }
+  };
 }
 
 export default layoutItemCreator;
