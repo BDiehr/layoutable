@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import LayoutActions from '../../../actions/LayoutActions';
+import LayoutActions from '../../../../../actions/LayoutActions';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 

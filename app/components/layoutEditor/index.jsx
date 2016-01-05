@@ -1,5 +1,6 @@
 import connectToStores from 'alt/utils/connectToStores';
 import LayoutStore from '../../stores/LayoutStore';
+import DetailPaneStore from '../../stores/DetailPaneStore';
 import LayoutActions from '../../actions/LayoutActions';
 import React, { Component, PropTypes } from 'react';
 import Box from './layoutComponents/box';
@@ -18,6 +19,8 @@ class LayoutEditor extends Component {
     selectedId: PropTypes.string.isRequired,
     styleMap: PropTypes.any.isRequired,
     HTMLTree: PropTypes.any,
+    detailPane: PropTypes.any,
+    selectedStyle: PropTypes.any,
   };
 
   constructor(props, context) {
@@ -30,11 +33,13 @@ class LayoutEditor extends Component {
   }
 
   static getStores() {
-    return [LayoutStore];
+    return [LayoutStore, DetailPaneStore];
   }
 
   static getPropsFromStores() {
-    return LayoutStore.getState();
+    return Object.assign({},
+      LayoutStore.getState(),
+      DetailPaneStore.getState());
   }
 
   getCounter = () => {
@@ -44,6 +49,7 @@ class LayoutEditor extends Component {
   };
 
   render() {
+    const { selectedId, styleMap, HTMLTree, detailPane, selectedStyle } = this.props;
     return (
       <div>
         <div className="body">
@@ -60,10 +66,15 @@ class LayoutEditor extends Component {
             <DragMenu />
             <Box getCounter={this.getCounter} number={1} id="root" depth={0}/>
           </Container>
-          <DetailPane {...this.props} />
+          <DetailPane
+            selectedId={selectedId}
+            selectedStyle={selectedStyle}
+            >
+            {detailPane}
+          </DetailPane>
           <CodeViewer
-            HTMLTree={this.props.HTMLTree}
-            styleMap={this.props.styleMap}
+            HTMLTree={HTMLTree}
+            styleMap={styleMap}
             />
         </div>
       </div>

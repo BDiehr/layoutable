@@ -3,6 +3,8 @@ import HoverButtons from './../../core/hoverButtons/index';
 import React, { Component, PropTypes} from 'react';
 import './box.scss';
 import layoutItem from './../../core/layoutItem';
+import DetailPaneActions from '../../../../actions/DetailPaneActions';
+import BoxDetailPane from './boxDetailPane';
 
 @layoutItem()
 class Box extends Component {
@@ -38,6 +40,10 @@ class Box extends Component {
     /** Handle change in selected Style */
     if (this.props.isSelected && !_.isEqual(this.props.style, this.props.selectedStyle)) {
       this.props.updateStyle(this.props.selectedStyle);
+    }
+    /** Update Detail Pane */
+    if (this.props.isSelected && !prevProps.isSelected) {
+      DetailPaneActions.selectPane(<BoxDetailPane />);
     }
   }
 
