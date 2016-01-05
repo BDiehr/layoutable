@@ -2,12 +2,12 @@ import _ from 'lodash';
 import React, { Component, PropTypes} from 'react';
 import classNames from 'classnames';
 import HoverButtons from './../../core/hoverButtons/index';
-import InternalItem from './internalItem';
-import './item.scss';
-import layoutItem from './layoutItem';
+import InternalBox from './internalBox';
+import './box.scss';
+import layoutItem from './../../core/layoutItem';
 
 @layoutItem()
-class Item extends Component {
+class Box extends Component {
   static propTypes = {
     hover: PropTypes.bool.isRequired,
     isHoveredChild: PropTypes.bool.isRequired,
@@ -48,7 +48,7 @@ class Item extends Component {
   addItem = () => {
     const itemId = `item-depth-${this.props.depth + 1}-num-${this.props.getCounter()}`;
     this.props.addChild(
-      <Item
+      <Box
         key={itemId}
         id={itemId}
         depth={this.props.depth + 1}
@@ -87,17 +87,17 @@ class Item extends Component {
             removeChild={id !== 'root' ? removeChild : undefined}
             />
         ) : null}
-        <InternalItem
+        <InternalBox
           onClick={onClick}
           id={id}
           style={style}
           getCounter={getCounter}
           >
           {children}
-        </InternalItem>
+        </InternalBox>
       </div>
     );
   }
 }
 
-export default Item;
+export default Box;

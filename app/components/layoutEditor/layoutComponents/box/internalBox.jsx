@@ -1,7 +1,7 @@
 import React, { Component, PropTypes} from 'react';
 import classNames from 'classnames';
 
-class InternalItem extends Component {
+export default class InternalBox extends Component {
   static propTypes = {
     onClick: PropTypes.func.isRequired,
     connectDropTarget: PropTypes.func.isRequired,
@@ -44,5 +44,3 @@ class InternalItem extends Component {
     );
   }
 }
-
-export default InternalItem;

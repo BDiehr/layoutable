@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import connectToStores from 'alt/utils/connectToStores';
-import LayoutStore from '../../../../stores/LayoutStore';
-import LayoutActions from '../../../../actions/LayoutActions';
+import connectToStores from '../../../../node_modules/alt/utils/connectToStores';
+import LayoutStore from '../../../stores/LayoutStore';
+import LayoutActions from '../../../actions/LayoutActions';
 
 function layoutItemCreator() {
   return function layoutItem(Spec, ReactComponent = Spec) {

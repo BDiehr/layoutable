@@ -2,7 +2,7 @@ import connectToStores from 'alt/utils/connectToStores';
 import LayoutStore from '../../stores/LayoutStore';
 import LayoutActions from '../../actions/LayoutActions';
 import React, { Component, PropTypes } from 'react';
-import Item from './layoutComponents/item';
+import Box from './layoutComponents/box';
 import Container from './container';
 import DetailPane from './detailPane';
 import CodeViewer from './codeViewer';
@@ -58,7 +58,7 @@ class LayoutEditor extends Component {
           </div>
           <Container>
             <DragMenu />
-            <Item getCounter={this.getCounter} number={1} id="root" depth={0}/>
+            <Box getCounter={this.getCounter} number={1} id="root" depth={0}/>
           </Container>
           <DetailPane {...this.props} />
           <CodeViewer
