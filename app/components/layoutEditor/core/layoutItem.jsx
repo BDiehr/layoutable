@@ -1,12 +1,28 @@
 import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
+import { DropTarget } from 'react-dnd';
 import connectToStores from '../../../../node_modules/alt/utils/connectToStores';
 import LayoutStore from '../../../stores/LayoutStore';
 import LayoutActions from '../../../actions/LayoutActions';
 import HoverButtons from './hoverButtons/index';
+import childOwner from './childOwner';
 
-function layoutItemCreator() {
+function layoutItemCreator(itemType) {
   return function layoutItem(Spec, ReactComponent = Spec) {
+    const boxTarget = {
+      drop(props, monitor) {
+        const hasDroppedOnChild = monitor.didDrop() && monitor.isOver({ shallow: true });
+        return hasDroppedOnChild === undefined
+          ? undefined
+          : { id: props.id, addChild: props.addChild };
+      },
+    };
+    @childOwner()
+    @DropTarget(itemType, boxTarget, (connect, monitor) => ({
+      connectDropTarget: connect.dropTarget(),
+      isOver: monitor.isOver(),
+      isOverCurrent: monitor.isOver({ shallow: true }),
+    }))
     @connectToStores
     class ItemConnection extends Component {
       static propTypes = {
@@ -15,11 +31,14 @@ function layoutItemCreator() {
         id: PropTypes.string.isRequired,
         parentId: PropTypes.string,
         markToDelete: PropTypes.func,
+        connectDropTarget: PropTypes.func.isRequired,
+        childItems: PropTypes.any,
+        addChild: PropTypes.func.isRequired,
+        removeChildFromTop: PropTypes.func.isRequired,
       };
 
       state = {
         hoverMenu: null,
-        childItems: [],
         childHoverStates: new Map(),
         hover: false,
         style: {
@@ -78,22 +97,16 @@ function layoutItemCreator() {
 
       deleteChild = (id) => {
         return () => {
-          LayoutActions.deleteItem(id);
           const newMap = this.state.childHoverStates;
           newMap.delete(id);
           this.setState({ childHoverStates: newMap });
-          this.setState({ childItems: this.state.childItems.filter(item => item.props.id !== id) });
+          this.props.removeChildFromTop(id);
         };
       };
 
       removeChild = () => {
         const markToDelete = this.props.markToDelete;
         if (markToDelete) markToDelete();
-      };
-
-      addChild = (item) => {
-        this.selectItem();
-        this.setState({ childItems: this.state.childItems.concat(item) });
       };
 
       updateStyle = (style) => {
@@ -121,11 +134,11 @@ function layoutItemCreator() {
       };
 
       render() {
+        const { connectDropTarget, addChild } = this.props;
         const containerClasses = classNames('layout-item-container', {
           'layout-item-container--selected': this.isSelected(),
         });
-
-        return (
+        return connectDropTarget(
           <div
             onMouseEnter={this.onMouseEnterHandler}
             onMouseLeave={this.onMouseLeaveHandler}
@@ -136,7 +149,7 @@ function layoutItemCreator() {
               createHoverMenu={this.createHoverMenu}
               onClick={this.onClick}
               updateStyle={this.updateStyle}
-              addChild={this.addChild}
+              addChild={addChild}
               deleteChild={this.deleteChild}
               removeChild={this.removeChild}
               isSelected={this.isSelected()}
@@ -144,7 +157,7 @@ function layoutItemCreator() {
               {...this.state}
               {...this.props}
               >
-              {this.state.childItems}
+              {this.props.childItems}
             </ReactComponent>
           </div>
         );

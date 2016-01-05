@@ -12,12 +12,12 @@ const cardSource = {
   endDrag(props, monitor) {
     const dropResult = monitor.getDropResult();
     if (dropResult) {
-      dropResult.addChild.call(null, );
+      dropResult.addChild.call(null, <h2>awesome it works!</h2>);
     }
   },
 };
 
-@DragSource('ITEM', cardSource, (connect, monitor) => ({
+@DragSource('BOX', cardSource, (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
   isDragging: monitor.isDragging(),
 }))

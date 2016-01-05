@@ -5,7 +5,7 @@ import layoutItem from './../../core/layoutItem';
 import DetailPaneActions from '../../../../actions/DetailPaneActions';
 import BoxDetailPane from './boxDetailPane';
 
-@layoutItem()
+@layoutItem('BOX')
 class Box extends Component {
   static propTypes = {
     children: PropTypes.any,
@@ -73,6 +73,7 @@ class Box extends Component {
       return children.map((child, i) => React.cloneElement(child, {
         number: i,
         getCounter: getCounter,
+        key: i,
       }));
     }
   }
