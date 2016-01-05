@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React, { Component, PropTypes} from 'react';
+import classNames from 'classnames';
 import './box.scss';
 import layoutItem from './../../core/layoutItem';
 import DetailPaneActions from '../../../../actions/DetailPaneActions';
@@ -80,11 +81,15 @@ class Box extends Component {
 
   render() {
     const { style, onClick } = this.props;
+    const classes = classNames('layout-item', {
+      'layout-item--selected': this.props.isSelected,
+    });
+
     return (
       <div
         onClick={onClick}
         style={style}
-        className="layout-item"
+        className={classes}
         >
         {this.renderChildren()}
       </div>

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { DragSource } from 'react-dnd';
+import { Button } from 'react-bootstrap';
 import './draggable.scss';
 /**
  * Implements the drag source contract.
@@ -12,7 +13,7 @@ const cardSource = {
   endDrag(props, monitor) {
     const dropResult = monitor.getDropResult();
     if (dropResult) {
-      dropResult.addChild.call(null, <h2>awesome it works!</h2>);
+      dropResult.addChild.call(null, <Button>It works!</Button>);
     }
   },
 };

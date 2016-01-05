@@ -8,18 +8,24 @@
   font-size: 2em;
 }
 
-
 .layout-item-container {
   margin: 1em;
   display: flex;
   background: #f4f4f4;
   flex-direction: row;
-  border: #c9c9c9 3px solid;
   justify-content: flex-start;
   align-items: stretch;
-  transition: border 0.4s, background 0.2s;
   flex-wrap: nowrap;
   flex-grow: 1;
+}
+
+.layout-item {
+  border: #c9c9c9 3px solid;
+  display: flex;
+  transition: border 0.4s, background 0.2s;
+  &--hover {
+    background: #dcf3ed;
+  }
 
   &:hover {
     border: #5f6370 3px solid;
@@ -33,14 +39,6 @@
       background: #dcf3ed;
       border-style: dashed;
     }
-  }
-}
-
-.layout-item {
-  display: flex;
-  margin: 1px;
-  &--hover {
-    background: #dcf3ed;
   }
 }
 
