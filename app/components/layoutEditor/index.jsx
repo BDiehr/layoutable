@@ -5,7 +5,7 @@ import LayoutActions from '../../actions/LayoutActions';
 import React, { Component, PropTypes } from 'react';
 import Box from './layoutComponents/box';
 import Container from './container';
-import DetailPane from './detailPane';
+import DetailPane from './core/detailPane';
 import CodeViewer from './codeViewer';
 import DragMenu from './dragMenu';
 import './layoutEditor.scss';
