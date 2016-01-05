@@ -6,7 +6,7 @@ import './codeViewer.scss';
 export default class CodeViewer extends Component {
   static propTypes = {
     styleMap: PropTypes.any.isRequired,
-    HTMLTree: PropTypes.any.isRequired,
+    HTMLTree: PropTypes.any,
   };
 
   render() {

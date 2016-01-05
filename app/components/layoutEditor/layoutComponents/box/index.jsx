@@ -7,26 +7,26 @@ import layoutItem from './../../core/layoutItem';
 @layoutItem()
 class Box extends Component {
   static propTypes = {
+    children: PropTypes.any,
     hover: PropTypes.bool.isRequired,
+    style: PropTypes.object.isRequired,
     isHoveredChild: PropTypes.bool.isRequired,
     isSelected: PropTypes.bool.isRequired,
-    children: PropTypes.any,
+    depth: PropTypes.number.isRequired,
     number: PropTypes.number,
     id: PropTypes.string.isRequired,
-    depth: PropTypes.number.isRequired,
     parentId: PropTypes.string,
-    selectedStyle: PropTypes.object,
     selectedId: PropTypes.string,
+    selectedStyle: PropTypes.object,
     registerHoveredState: PropTypes.func,
     markToDelete: PropTypes.func,
     getCounter: PropTypes.func.isRequired,
     addChild: PropTypes.func.isRequired,
     removeChild: PropTypes.func.isRequired,
     deleteChild: PropTypes.func.isRequired,
-    childHoverStateRegistration: PropTypes.func.isRequired,
     updateStyle: PropTypes.func.isRequired,
     onClick: PropTypes.func.isRequired,
-    style: PropTypes.object.isRequired,
+    childHoverStateRegistration: PropTypes.func.isRequired,
   };
 
   componentDidUpdate(prevProps) {

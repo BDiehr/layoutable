@@ -27,7 +27,7 @@ ${tabs(depth)}</div>`
 
 export default class HTMLViewer extends Component {
   static propTypes = {
-    HTMLTree: PropTypes.any.isRequired,
+    HTMLTree: PropTypes.any,
   };
 
   getPrettyHTML() {

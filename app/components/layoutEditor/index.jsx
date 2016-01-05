@@ -17,7 +17,7 @@ class LayoutEditor extends Component {
   static propTypes = {
     selectedId: PropTypes.string.isRequired,
     styleMap: PropTypes.any.isRequired,
-    HTMLTree: PropTypes.any.isRequired,
+    HTMLTree: PropTypes.any,
   };
 
   constructor(props, context) {

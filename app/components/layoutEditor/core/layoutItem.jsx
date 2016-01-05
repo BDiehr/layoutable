@@ -66,11 +66,6 @@ function layoutItemCreator() {
         return this.state.hover && !hasHoveredChild;
       };
 
-      removeChild = () => {
-        const markToDelete = this.props.markToDelete;
-        if (markToDelete) markToDelete();
-      };
-
       componentWillMount() {
         LayoutActions.addItem({ id: this.props.id, parentId: this.props.parentId });
       }
@@ -87,6 +82,11 @@ function layoutItemCreator() {
           this.setState({ childHoverStates: newMap });
           this.setState({ childItems: this.state.childItems.filter(item => item.props.id !== id) });
         };
+      };
+
+      removeChild = () => {
+        const markToDelete = this.props.markToDelete;
+        if (markToDelete) markToDelete();
       };
 
       addChild = (item) => {
