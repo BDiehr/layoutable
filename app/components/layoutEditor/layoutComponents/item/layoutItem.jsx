@@ -41,7 +41,7 @@ function layoutItem(Spec, ReactComponent = Spec) {
       this.setState({ hover: false });
     };
 
-    isLeafNodeAndHovered = () => {
+    isHoveredChild = () => {
       /** Determine if we should show the utility buttons */
       const iteratorOfChildHoverStates = this.state.childHoverStates.values();
       let hasHoveredChild = false;
@@ -74,7 +74,7 @@ function layoutItem(Spec, ReactComponent = Spec) {
           isSelected={this.isSelected()}
           onMouseEnterHandler={this.onMouseEnterHandler}
           onMouseLeaveHandler={this.onMouseLeaveHandler}
-          isHoveredChild={this.isLeafNodeAndHovered()}
+          isHoveredChild={this.isHoveredChild()}
           childHoverStateRegistration={this.childHoverStateRegistration}
           {...this.state}
           {...this.props}

@@ -26,7 +26,6 @@ class Item extends Component {
     registerHoveredState: PropTypes.func,
     markToDelete: PropTypes.func,
     getCounter: PropTypes.func.isRequired,
-    incrementCounter: PropTypes.func.isRequired,
     onMouseEnterHandler: PropTypes.func.isRequired,
     onMouseLeaveHandler: PropTypes.func.isRequired,
     childHoverStateRegistration: PropTypes.func.isRequired,
@@ -34,7 +33,6 @@ class Item extends Component {
   };
 
   state = {
-    childComponents: [],
     childItems: [],
     style: {
       flexDirection: 'row',
@@ -95,12 +93,6 @@ class Item extends Component {
     this.setState({ childItems: childItems.concat(newItem) });
   };
 
-  addComponent = (component) => {
-    this.selectItem();
-    const childComponents = this.state.childComponents;
-    this.setState({ childComponents: childComponents.concat(component) });
-  };
-
   render() {
     const style = this.state.style;
     const containerClasses = classNames('layout-item-container', {
@@ -125,7 +117,6 @@ class Item extends Component {
           id={this.props.id}
           style={style}
           getCounter={this.props.getCounter}
-          childComponents={this.state.childComponents}
           >
           {this.state.childItems}
         </InternalItem>

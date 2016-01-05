@@ -22,7 +22,6 @@ class InternalItem extends Component {
     isOver: PropTypes.bool.isRequired,
     isOverCurrent: PropTypes.bool.isRequired,
     children: PropTypes.any,
-    childComponents: PropTypes.any,
     style: PropTypes.object.isRequired,
     number: PropTypes.number,
     id: PropTypes.string.isRequired,
@@ -44,7 +43,7 @@ class InternalItem extends Component {
   }
 
   render() {
-    const { isOverCurrent, connectDropTarget, style, onClick, childComponents } = this.props;
+    const { isOverCurrent, connectDropTarget, style, onClick } = this.props;
     const classes = classNames({
       'layout-item': true,
       'layout-item--hover': isOverCurrent,
@@ -57,7 +56,6 @@ class InternalItem extends Component {
         className={classes}
         >
         {this.renderChildren()}
-        {childComponents}
       </div>
     );
   }
