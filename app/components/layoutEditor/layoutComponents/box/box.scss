@@ -10,6 +10,7 @@
 
 
 .layout-item-container {
+  margin: 1em;
   display: flex;
   background: #f4f4f4;
   flex-direction: row;
@@ -37,7 +38,6 @@
 
 .layout-item {
   display: flex;
-  padding: 1em;
   margin: 1px;
   &--hover {
     background: #dcf3ed;

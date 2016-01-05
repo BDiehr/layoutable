@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { Component, PropTypes} from 'react';
 import classNames from 'classnames';
-import HoverButtons from './../../core/hoverButtons/index';
 import InternalBox from './internalBox';
 import './box.scss';
 import layoutItem from './../../core/layoutItem';
@@ -81,13 +80,10 @@ class Box extends Component {
         onMouseEnter={onMouseEnterHandler}
         onMouseLeave={onMouseLeaveHandler}
         className={containerClasses}>
-        {isHoveredChild ? (
-          <HoverButtons
-            addChild={this.addItem}
-            removeChild={id !== 'root' ? removeChild : undefined}
-            />
-        ) : null}
         <InternalBox
+          isHoveredChild={isHoveredChild}
+          addItem={this.addItem}
+          removeChild={removeChild}
           onClick={onClick}
           id={id}
           style={style}
