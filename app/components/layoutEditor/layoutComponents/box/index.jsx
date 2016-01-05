@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import HoverButtons from './../../core/hoverButtons/index';
 import React, { Component, PropTypes} from 'react';
 import './box.scss';
 import layoutItem from './../../core/layoutItem';
@@ -12,7 +11,6 @@ class Box extends Component {
     children: PropTypes.any,
     hover: PropTypes.bool.isRequired,
     style: PropTypes.object.isRequired,
-    isHoveredChild: PropTypes.bool.isRequired,
     isSelected: PropTypes.bool.isRequired,
     depth: PropTypes.number.isRequired,
     number: PropTypes.number,
@@ -29,7 +27,13 @@ class Box extends Component {
     updateStyle: PropTypes.func.isRequired,
     onClick: PropTypes.func.isRequired,
     childHoverStateRegistration: PropTypes.func.isRequired,
+    createHoverMenu: PropTypes.func.isRequired,
   };
+
+  componentDidMount() {
+    const { createHoverMenu, removeChild } = this.props;
+    createHoverMenu({ removeChild, addChild: this.addItem });
+  }
 
   componentDidUpdate(prevProps) {
     /** Handle registered hover map */
@@ -74,20 +78,13 @@ class Box extends Component {
   }
 
   render() {
-    const { style, onClick, removeChild, isHoveredChild, id } = this.props;
-
+    const { style, onClick } = this.props;
     return (
       <div
         onClick={onClick}
         style={style}
         className="layout-item"
         >
-        {isHoveredChild ? (
-          <HoverButtons
-            addChild={this.addItem}
-            removeChild={id !== 'root' ? removeChild : undefined}
-            />
-        ) : null}
         {this.renderChildren()}
       </div>
     );
