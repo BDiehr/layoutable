@@ -14,6 +14,10 @@ function layoutItem(Spec, ReactComponent = Spec) {
       parentId: PropTypes.string,
     };
 
+    state = {
+      hover: false,
+    };
+
     static getStores() {
       return [LayoutStore];
     }
@@ -21,6 +25,14 @@ function layoutItem(Spec, ReactComponent = Spec) {
     static getPropsFromStores() {
       return LayoutStore.getState();
     }
+
+    onMouseEnterHandler = () => {
+      this.setState({ hover: true });
+    };
+
+    onMouseLeaveHandler = () => {
+      this.setState({ hover: false });
+    };
 
     removeChild = () => {
       const markToDelete = this.props.markToDelete;
@@ -36,7 +48,16 @@ function layoutItem(Spec, ReactComponent = Spec) {
     };
 
     render() {
-      return <ReactComponent removeChild={this.removeChild} isSelected={this.isSelected} {...this.props} />;
+      return (
+        <ReactComponent
+          removeChild={this.removeChild}
+          isSelected={this.isSelected}
+          onMouseEnterHandler={this.onMouseEnterHandler}
+          onMouseLeaveHandler={this.onMouseLeaveHandler}
+          {...this.state}
+          {...this.props}
+          />
+      );
     }
   }
 

@@ -10,6 +10,7 @@ import layoutItem from './layoutItem';
 @layoutItem
 class Item extends Component {
   static propTypes = {
+    hover: PropTypes.bool.isRequired,
     isSelected: PropTypes.func.isRequired,
     connectDropTarget: PropTypes.func.isRequired,
     isOver: PropTypes.bool.isRequired,
@@ -25,10 +26,11 @@ class Item extends Component {
     markToDelete: PropTypes.func,
     getCounter: PropTypes.func.isRequired,
     incrementCounter: PropTypes.func.isRequired,
+    onMouseEnterHandler: PropTypes.func.isRequired,
+    onMouseLeaveHandler: PropTypes.func.isRequired,
   };
 
   state = {
-    hover: false,
     childHoverStates: new Map(),
     childComponents: [],
     childItems: [],
@@ -43,9 +45,9 @@ class Item extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     /** Handle registered hover map */
-    if (prevState.hover !== this.state.hover) {
+    if (prevProps.hover !== this.props.hover) {
       const { registerHoveredState, id } = this.props;
-      if (registerHoveredState) registerHoveredState(id, this.state.hover);
+      if (registerHoveredState) registerHoveredState(id, this.props.hover);
     }
     /** Handle change in selected Style */
     if (this.props.isSelected() && !_.isEqual(this.state.style, this.props.selectedStyle)) {
@@ -53,14 +55,6 @@ class Item extends Component {
       this.setState({style: this.props.selectedStyle});
     }
   }
-
-  onMouseEnterHandler = () => {
-    this.setState({ hover: true });
-  };
-
-  onMouseLeaveHandler = () => {
-    this.setState({ hover: false });
-  };
 
   onClick = () => {
     if (this.isLeafNodeAndHovered()) {
@@ -78,7 +72,7 @@ class Item extends Component {
         break;
       }
     }
-    return this.state.hover && !hasHoveredChild;
+    return this.props.hover && !hasHoveredChild;
   }
 
   childHoverStateRegistration = (id, state) => {
@@ -132,8 +126,8 @@ class Item extends Component {
 
     return (
       <div
-        onMouseEnter={this.onMouseEnterHandler}
-        onMouseLeave={this.onMouseLeaveHandler}
+        onMouseEnter={this.props.onMouseEnterHandler}
+        onMouseLeave={this.props.onMouseLeaveHandler}
         className={containerClasses}>
         {this.isLeafNodeAndHovered() ? (
           <HoverButtons
