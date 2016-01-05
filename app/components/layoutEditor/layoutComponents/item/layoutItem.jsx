@@ -15,12 +15,19 @@ function layoutItem(Spec, ReactComponent = Spec) {
     };
 
     state = {
+      childHoverStates: new Map(),
       hover: false,
     };
 
     static getStores() {
       return [LayoutStore];
     }
+
+    childHoverStateRegistration = (id, state) => {
+      const newMap = this.state.childHoverStates;
+      newMap.set(id, state);
+      this.setState({childHoverStates: newMap});
+    };
 
     static getPropsFromStores() {
       return LayoutStore.getState();
@@ -32,6 +39,19 @@ function layoutItem(Spec, ReactComponent = Spec) {
 
     onMouseLeaveHandler = () => {
       this.setState({ hover: false });
+    };
+
+    isLeafNodeAndHovered = () => {
+      /** Determine if we should show the utility buttons */
+      const iteratorOfChildHoverStates = this.state.childHoverStates.values();
+      let hasHoveredChild = false;
+      for (const hoverState of iteratorOfChildHoverStates) {
+        if (hoverState) {
+          hasHoveredChild = true;
+          break;
+        }
+      }
+      return this.state.hover && !hasHoveredChild;
     };
 
     removeChild = () => {
@@ -51,9 +71,11 @@ function layoutItem(Spec, ReactComponent = Spec) {
       return (
         <ReactComponent
           removeChild={this.removeChild}
-          isSelected={this.isSelected}
+          isSelected={this.isSelected()}
           onMouseEnterHandler={this.onMouseEnterHandler}
           onMouseLeaveHandler={this.onMouseLeaveHandler}
+          isHoveredChild={this.isLeafNodeAndHovered()}
+          childHoverStateRegistration={this.childHoverStateRegistration}
           {...this.state}
           {...this.props}
           />

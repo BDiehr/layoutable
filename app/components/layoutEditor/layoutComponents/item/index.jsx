@@ -11,7 +11,8 @@ import layoutItem from './layoutItem';
 class Item extends Component {
   static propTypes = {
     hover: PropTypes.bool.isRequired,
-    isSelected: PropTypes.func.isRequired,
+    isHoveredChild: PropTypes.bool.isRequired,
+    isSelected: PropTypes.bool.isRequired,
     connectDropTarget: PropTypes.func.isRequired,
     isOver: PropTypes.bool.isRequired,
     canDrop: PropTypes.bool.isRequired,
@@ -28,10 +29,11 @@ class Item extends Component {
     incrementCounter: PropTypes.func.isRequired,
     onMouseEnterHandler: PropTypes.func.isRequired,
     onMouseLeaveHandler: PropTypes.func.isRequired,
+    childHoverStateRegistration: PropTypes.func.isRequired,
+    childHoverStates: PropTypes.object,
   };
 
   state = {
-    childHoverStates: new Map(),
     childComponents: [],
     childItems: [],
     style: {
@@ -50,35 +52,16 @@ class Item extends Component {
       if (registerHoveredState) registerHoveredState(id, this.props.hover);
     }
     /** Handle change in selected Style */
-    if (this.props.isSelected() && !_.isEqual(this.state.style, this.props.selectedStyle)) {
+    if (this.props.isSelected && !_.isEqual(this.state.style, this.props.selectedStyle)) {
       // TODO: Change this implementation not to set in `componentDidUpdate`.
       this.setState({style: this.props.selectedStyle});
     }
   }
 
   onClick = () => {
-    if (this.isLeafNodeAndHovered()) {
+    if (this.props.isHoveredChild) {
       this.selectItem();
     }
-  };
-
-  isLeafNodeAndHovered() {
-    /** Determine if we should show the utility buttons */
-    const iteratorOfChildHoverStates = this.state.childHoverStates.values();
-    let hasHoveredChild = false;
-    for (const hoverState of iteratorOfChildHoverStates) {
-      if (hoverState) {
-        hasHoveredChild = true;
-        break;
-      }
-    }
-    return this.props.hover && !hasHoveredChild;
-  }
-
-  childHoverStateRegistration = (id, state) => {
-    const newMap = this.state.childHoverStates;
-    newMap.set(id, state);
-    this.setState({childHoverStates: newMap});
   };
 
   selectItem = () => {
@@ -88,7 +71,7 @@ class Item extends Component {
   deleteChild = (id) => {
     return () => {
       LayoutActions.deleteItem(id);
-      const newMap = this.state.childHoverStates;
+      const newMap = this.props.childHoverStates;
       newMap.delete(id);
       this.setState({ childHoverStates: newMap });
       this.setState({ childItems: this.state.childItems.filter(item => item.props.id !== id) });
@@ -106,7 +89,7 @@ class Item extends Component {
         depth={this.props.depth + 1}
         parentId={this.props.id}
         markToDelete={this.deleteChild(itemId)}
-        registerHoveredState={this.childHoverStateRegistration}
+        registerHoveredState={this.props.childHoverStateRegistration}
         />
     );
     this.setState({ childItems: childItems.concat(newItem) });
@@ -121,7 +104,7 @@ class Item extends Component {
   render() {
     const style = this.state.style;
     const containerClasses = classNames('layout-item-container', {
-      'layout-item-container--selected': this.props.isSelected(),
+      'layout-item-container--selected': this.props.isSelected,
     });
 
     return (
@@ -129,7 +112,7 @@ class Item extends Component {
         onMouseEnter={this.props.onMouseEnterHandler}
         onMouseLeave={this.props.onMouseLeaveHandler}
         className={containerClasses}>
-        {this.isLeafNodeAndHovered() ? (
+        {this.props.isHoveredChild ? (
           <HoverButtons
             addChild={this.addChild}
             removeChild={this.props.id !== 'root' ? this.props.removeChild : undefined}
