@@ -18,10 +18,18 @@ function childOwnerClosure() {
         this.setState({ isHovered: false });
       };
 
-      addChild = (item) => {
-        this.setState({ childItems: this.state.childItems.concat(item) });
+      addChild = (child) => {
+        const id = child.props.id;
+        const childWithUtils = React.cloneElement(child, {
+          registerHoverState: (state) => {
+            const hoverStates = this.state.childItemHoverStates
+              .filter(h => h.id !== id)
+              .concat({ id, state });
+            this.setState({ childItemHoverStates: hoverStates });
+          },
+        });
+        this.setState({ childItems: this.state.childItems.concat(childWithUtils) });
       };
-
 
       removeChildFromTop = (id) => {
         LayoutActions.deleteItem(id);
@@ -29,13 +37,18 @@ function childOwnerClosure() {
         this.setState({ childItems: this.state.childItems.filter(item => item.props.id !== id) });
       };
 
+      isHoveredLeaf() {
+        return this.state.isHovered && !this.state.childItemHoverStates.some(h => h.state === true);
+      }
+
       render() {
+        const { childItems, isHovered } = this.state;
         return (
           <ReactComponent
             {...this.props}
-            childItems={this.state.childItems}
-            isHovered={this.state.isHovered}
-            isHoveredLeaf={!this.state.childItemHoverStates.some(state => state.isHovered === true)}
+            childItems={childItems}
+            isHovered={isHovered}
+            isHoveredLeaf={this.isHoveredLeaf()}
             onMouseEnter={this.onMouseEnter}
             onMouseLeave={this.onMouseLeave}
             removeChildFromTop={this.removeChildFromTop}

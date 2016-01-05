@@ -28,6 +28,7 @@ function layoutItemCreator(itemType) {
       static propTypes = {
         isHovered: PropTypes.bool.isRequired,
         isHoveredLeaf: PropTypes.bool.isRequired,
+        registerHoverState: PropTypes.func,
         selectedStyle: PropTypes.object,
         selectedId: PropTypes.string,
         id: PropTypes.string.isRequired,
@@ -54,6 +55,13 @@ function layoutItemCreator(itemType) {
 
       componentWillMount() {
         LayoutActions.addItem({ id: this.props.id, parentId: this.props.parentId });
+      }
+
+      componentDidUpdate(prevProps) {
+        const { registerHoverState, isHovered } = this.props;
+        if (registerHoverState != null && prevProps.isHovered !== isHovered) {
+          registerHoverState(isHovered);
+        }
       }
 
       onClick = () => {
