@@ -26,6 +26,8 @@ function layoutItemCreator(itemType) {
     @connectToStores
     class ItemConnection extends Component {
       static propTypes = {
+        isHovered: PropTypes.bool.isRequired,
+        isHoveredLeaf: PropTypes.bool.isRequired,
         selectedStyle: PropTypes.object,
         selectedId: PropTypes.string,
         id: PropTypes.string.isRequired,
@@ -35,12 +37,12 @@ function layoutItemCreator(itemType) {
         childItems: PropTypes.any,
         addChild: PropTypes.func.isRequired,
         removeChildFromTop: PropTypes.func.isRequired,
+        onMouseEnter: PropTypes.func.isRequired,
+        onMouseLeave: PropTypes.func.isRequired,
       };
 
       state = {
         hoverMenu: null,
-        childHoverStates: new Map(),
-        hover: false,
         style: {
           flexDirection: 'row',
           justifyContent: 'flex-start',
@@ -48,6 +50,16 @@ function layoutItemCreator(itemType) {
           flexWrap: 'nowrap',
           flexGrow: '1',
         },
+      };
+
+      componentWillMount() {
+        LayoutActions.addItem({ id: this.props.id, parentId: this.props.parentId });
+      }
+
+      onClick = () => {
+        if (this.props.isHoveredLeaf) {
+          this.selectItem();
+        }
       };
 
       static getStores() {
@@ -58,48 +70,12 @@ function layoutItemCreator(itemType) {
         return LayoutStore.getState();
       }
 
-      childHoverStateRegistration = (id, state) => {
-        const newMap = this.state.childHoverStates;
-        newMap.set(id, state);
-        this.setState({childHoverStates: newMap});
-      };
-
-      /*eslint-disable*/
-      onMouseEnterHandler = () => {
-        this.setState({ hover: true });
-      };
-      /*eslint-enable*/
-
-      onMouseLeaveHandler = () => {
-        this.setState({ hover: false });
-      };
-
-      isHoveredChild = () => {
-        /** Determine if we should show the utility buttons */
-        const iteratorOfChildHoverStates = this.state.childHoverStates.values();
-        let hasHoveredChild = false;
-        for (const hoverState of iteratorOfChildHoverStates) {
-          if (hoverState) {
-            hasHoveredChild = true;
-            break;
-          }
-        }
-        return this.state.hover && !hasHoveredChild;
-      };
-
-      componentWillMount() {
-        LayoutActions.addItem({ id: this.props.id, parentId: this.props.parentId });
-      }
-
       isSelected = () => {
         return this.props.selectedId != null && this.props.id === this.props.selectedId;
       };
 
       deleteChild = (id) => {
         return () => {
-          const newMap = this.state.childHoverStates;
-          newMap.delete(id);
-          this.setState({ childHoverStates: newMap });
           this.props.removeChildFromTop(id);
         };
       };
@@ -117,12 +93,6 @@ function layoutItemCreator(itemType) {
         LayoutActions.selectItem({ id: this.props.id, style: this.state.style });
       };
 
-      onClick = () => {
-        if (this.isHoveredChild()) {
-          this.selectItem();
-        }
-      };
-
       createHoverMenu = ({ addChild, removeChild }) => {
         const hoverMenu = (
           <HoverButtons
@@ -134,27 +104,26 @@ function layoutItemCreator(itemType) {
       };
 
       render() {
-        const { connectDropTarget, addChild } = this.props;
+        const { connectDropTarget, addChild, isHoveredLeaf } = this.props;
         const containerClasses = classNames('layout-item-container', {
           'layout-item-container--selected': this.isSelected(),
         });
         return connectDropTarget(
           <div
-            onMouseEnter={this.onMouseEnterHandler}
-            onMouseLeave={this.onMouseLeaveHandler}
+            onMouseEnter={this.props.onMouseEnter}
+            onMouseLeave={this.props.onMouseLeave}
             className={containerClasses}
             >
-            {this.isHoveredChild() ? this.state.hoverMenu : null}
+            {isHoveredLeaf && this.state.hoverMenu != null ? this.state.hoverMenu : null}
             <ReactComponent
               createHoverMenu={this.createHoverMenu}
               onClick={this.onClick}
               updateStyle={this.updateStyle}
-              addChild={addChild}
               deleteChild={this.deleteChild}
               removeChild={this.removeChild}
               isSelected={this.isSelected()}
-              childHoverStateRegistration={this.childHoverStateRegistration}
-              {...this.state}
+              addChild={addChild}
+              style={this.state.style}
               {...this.props}
               >
               {this.props.childItems}

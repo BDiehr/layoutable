@@ -10,16 +10,15 @@ import BoxDetailPane from './boxDetailPane';
 class Box extends Component {
   static propTypes = {
     children: PropTypes.any,
-    hover: PropTypes.bool.isRequired,
     style: PropTypes.object.isRequired,
     isSelected: PropTypes.bool.isRequired,
+    isOver: PropTypes.bool.isRequired,
     depth: PropTypes.number.isRequired,
     number: PropTypes.number,
     id: PropTypes.string.isRequired,
     parentId: PropTypes.string,
     selectedId: PropTypes.string,
     selectedStyle: PropTypes.object,
-    registerHoveredState: PropTypes.func,
     markToDelete: PropTypes.func,
     getCounter: PropTypes.func.isRequired,
     addChild: PropTypes.func.isRequired,
@@ -27,21 +26,15 @@ class Box extends Component {
     deleteChild: PropTypes.func.isRequired,
     updateStyle: PropTypes.func.isRequired,
     onClick: PropTypes.func.isRequired,
-    childHoverStateRegistration: PropTypes.func.isRequired,
     createHoverMenu: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
     const { createHoverMenu, removeChild } = this.props;
-    createHoverMenu({ removeChild, addChild: this.addItem });
+    createHoverMenu({ removeChild, addChild: this.addBox });
   }
 
   componentDidUpdate(prevProps) {
-    /** Handle registered hover map */
-    if (prevProps.hover !== this.props.hover) {
-      const { registerHoveredState, id } = this.props;
-      if (registerHoveredState) registerHoveredState(id, this.props.hover);
-    }
     /** Handle change in selected Style */
     if (this.props.isSelected && !_.isEqual(this.props.style, this.props.selectedStyle)) {
       this.props.updateStyle(this.props.selectedStyle);
@@ -52,7 +45,7 @@ class Box extends Component {
     }
   }
 
-  addItem = () => {
+  addBox = () => {
     const itemId = `item-depth-${this.props.depth + 1}-num-${this.props.getCounter()}`;
     this.props.addChild(
       <Box
@@ -61,7 +54,6 @@ class Box extends Component {
         depth={this.props.depth + 1}
         parentId={this.props.id}
         markToDelete={this.props.deleteChild(itemId)}
-        registerHoveredState={this.props.childHoverStateRegistration}
         />
     );
   };
