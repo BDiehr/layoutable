@@ -12,7 +12,7 @@ const cardSource = {
   endDrag(props, monitor) {
     const dropResult = monitor.getDropResult();
     if (dropResult) {
-      dropResult.addChild.call(null);
+      dropResult.addChild.call(null, );
     }
   },
 };

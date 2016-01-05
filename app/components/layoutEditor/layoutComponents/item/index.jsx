@@ -7,15 +7,12 @@ import InternalItem from './internalItem';
 import './item.scss';
 import layoutItem from './layoutItem';
 
-@layoutItem
+@layoutItem()
 class Item extends Component {
   static propTypes = {
     hover: PropTypes.bool.isRequired,
     isHoveredChild: PropTypes.bool.isRequired,
     isSelected: PropTypes.bool.isRequired,
-    connectDropTarget: PropTypes.func.isRequired,
-    isOver: PropTypes.bool.isRequired,
-    canDrop: PropTypes.bool.isRequired,
     children: PropTypes.any,
     number: PropTypes.number,
     id: PropTypes.string.isRequired,
@@ -28,19 +25,12 @@ class Item extends Component {
     getCounter: PropTypes.func.isRequired,
     onMouseEnterHandler: PropTypes.func.isRequired,
     onMouseLeaveHandler: PropTypes.func.isRequired,
+    addChild: PropTypes.func.isRequired,
+    removeChild: PropTypes.func.isRequired,
+    deleteChild: PropTypes.func.isRequired,
     childHoverStateRegistration: PropTypes.func.isRequired,
-    childHoverStates: PropTypes.object,
-  };
-
-  state = {
-    childItems: [],
-    style: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'stretch',
-      flexWrap: 'nowrap',
-      flexGrow: '1',
-    },
+    updateStyle: PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -50,75 +40,60 @@ class Item extends Component {
       if (registerHoveredState) registerHoveredState(id, this.props.hover);
     }
     /** Handle change in selected Style */
-    if (this.props.isSelected && !_.isEqual(this.state.style, this.props.selectedStyle)) {
-      // TODO: Change this implementation not to set in `componentDidUpdate`.
-      this.setState({style: this.props.selectedStyle});
+    if (this.props.isSelected && !_.isEqual(this.props.style, this.props.selectedStyle)) {
+      this.props.updateStyle(this.props.selectedStyle);
     }
   }
 
-  onClick = () => {
-    if (this.props.isHoveredChild) {
-      this.selectItem();
-    }
-  };
-
-  selectItem = () => {
-    LayoutActions.selectItem({ id: this.props.id, style: this.state.style });
-  };
-
-  deleteChild = (id) => {
-    return () => {
-      LayoutActions.deleteItem(id);
-      const newMap = this.props.childHoverStates;
-      newMap.delete(id);
-      this.setState({ childHoverStates: newMap });
-      this.setState({ childItems: this.state.childItems.filter(item => item.props.id !== id) });
-    };
-  };
-
-  addChild = () => {
-    this.selectItem();
-    const childItems = this.state.childItems;
+  addItem = () => {
     const itemId = `item-depth-${this.props.depth + 1}-num-${this.props.getCounter()}`;
-    const newItem = (
+    this.props.addChild(
       <Item
         key={itemId}
         id={itemId}
         depth={this.props.depth + 1}
         parentId={this.props.id}
-        markToDelete={this.deleteChild(itemId)}
+        markToDelete={this.props.deleteChild(itemId)}
         registerHoveredState={this.props.childHoverStateRegistration}
         />
     );
-    this.setState({ childItems: childItems.concat(newItem) });
   };
 
   render() {
-    const style = this.state.style;
+    const {
+      onMouseEnterHandler,
+      onMouseLeaveHandler,
+      isHoveredChild,
+      id,
+      removeChild,
+      getCounter,
+      children,
+      onClick,
+      style,
+    } = this.props;
+
     const containerClasses = classNames('layout-item-container', {
       'layout-item-container--selected': this.props.isSelected,
     });
 
     return (
       <div
-        onMouseEnter={this.props.onMouseEnterHandler}
-        onMouseLeave={this.props.onMouseLeaveHandler}
+        onMouseEnter={onMouseEnterHandler}
+        onMouseLeave={onMouseLeaveHandler}
         className={containerClasses}>
-        {this.props.isHoveredChild ? (
+        {isHoveredChild ? (
           <HoverButtons
-            addChild={this.addChild}
-            removeChild={this.props.id !== 'root' ? this.props.removeChild : undefined}
+            addChild={this.addItem}
+            removeChild={id !== 'root' ? removeChild : undefined}
             />
         ) : null}
         <InternalItem
-          onClick={this.onClick}
-          addChild={this.addChild}
-          addComponent={this.addComponent}
-          id={this.props.id}
+          onClick={onClick}
+          id={id}
           style={style}
-          getCounter={this.props.getCounter}
+          getCounter={getCounter}
           >
-          {this.state.childItems}
+          {children}
         </InternalItem>
       </div>
     );

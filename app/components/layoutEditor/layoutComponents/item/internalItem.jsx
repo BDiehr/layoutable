@@ -1,20 +1,6 @@
 import React, { Component, PropTypes} from 'react';
 import classNames from 'classnames';
-import { DropTarget } from 'react-dnd';
 
-const boxTarget = {
-  drop(props, monitor) {
-    const hasDroppedOnChild = monitor.didDrop();
-    if (hasDroppedOnChild) return;
-    return { id: props.id, addChild: props.addChild, addComponent: props.addComponent };
-  },
-};
-
-@DropTarget('ITEM', boxTarget, (connect, monitor) => ({
-  connectDropTarget: connect.dropTarget(),
-  isOver: monitor.isOver(),
-  isOverCurrent: monitor.isOver({ shallow: true }),
-}))
 class InternalItem extends Component {
   static propTypes = {
     onClick: PropTypes.func.isRequired,
@@ -26,7 +12,6 @@ class InternalItem extends Component {
     number: PropTypes.number,
     id: PropTypes.string.isRequired,
     getCounter: PropTypes.func.isRequired,
-    addChild: PropTypes.func.isRequired,
     addComponent: PropTypes.func.isRequired,
   };
 
@@ -43,13 +28,12 @@ class InternalItem extends Component {
   }
 
   render() {
-    const { isOverCurrent, connectDropTarget, style, onClick } = this.props;
+    const { style, onClick } = this.props;
     const classes = classNames({
       'layout-item': true,
-      'layout-item--hover': isOverCurrent,
     });
 
-    return connectDropTarget(
+    return (
       <div
         onClick={onClick}
         style={style}
