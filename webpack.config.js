@@ -9,25 +9,18 @@ module.exports = {
       }
     })
   ],
-  context: __dirname + "/app",
+  context: __dirname + "/src",
   entry: {
-    javascript: "./components/main.js",
-    html: "./index.html"
+    javascript: "./example/main.js",
+    html: "./example/index.html"
   },
 
   resolve: {
     extensions: ['', '.js', '.jsx'],
-    alias: {
-      'constants': __dirname + '/app/constants',
-      'stores': __dirname + '/app/stores',
-      'components': __dirname + '/app/components',
-      'actions': __dirname + '/app/actions',
-      'styles': __dirname + '/app/styles',
-    }
   },
 
   output: {
-    filename: "components/main.js",
+    filename: "example/main.js",
     path: __dirname + "/dist"
   },
 

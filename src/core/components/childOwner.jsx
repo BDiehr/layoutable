@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LayoutActions from '../../../actions/LayoutActions';
+import LayoutActions from '../actions/LayoutActions';
 
 function childOwnerClosure() {
   return function childOwner(Spec, ReactComponent = Spec) {

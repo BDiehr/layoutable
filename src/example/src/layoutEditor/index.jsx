@@ -1,11 +1,11 @@
 import connectToStores from 'alt/utils/connectToStores';
-import LayoutStore from '../../stores/LayoutStore';
-import DetailPaneStore from '../../stores/DetailPaneStore';
-import LayoutActions from '../../actions/LayoutActions';
+import LayoutStore from '../../../core/stores/LayoutStore';
+import DetailPaneStore from '../../../core/stores/DetailPaneStore';
+import LayoutActions from '../../../core/actions/LayoutActions';
+import DetailPane from '../../../core/components/detailPane';
 import React, { Component, PropTypes } from 'react';
-import Box from './layoutComponents/box';
+import Box from '../layoutComponents/box';
 import Container from './container';
-import DetailPane from './core/detailPane';
 import CodeViewer from './codeViewer';
 import DragMenu from './dragMenu';
 import './layoutEditor.scss';

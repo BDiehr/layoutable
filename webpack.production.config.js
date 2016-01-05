@@ -2,27 +2,21 @@ var webpack = require('webpack');
 
 var JS_REGEX = /\.js$|\.jsx$|\.es6$|\.babel$/;
 module.exports = {
-  context: __dirname + "/app",
+  context: __dirname + "/src",
   entry: {
-    javascript: "./components/main.js",
+    javascript: "./example/main.js",
     html: "./index.html"
   },
 
   resolve: {
     extensions: ['', '.js', '.jsx'],
-    alias: {
-      'constants': __dirname + '/app/constants',
-      'stores': __dirname + '/app/stores',
-      'components': __dirname + '/app/components',
-      'actions': __dirname + '/app/actions',
-      'styles': __dirname + '/app/styles',
-    }
   },
 
   output: {
-    filename: "components/main.js",
+    filename: "example/main.js",
     path: __dirname + "/dist"
   },
+
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
@@ -30,6 +24,7 @@ module.exports = {
       }
     })
   ],
+
   module: {
     loaders: [
       {test: JS_REGEX, exclude: /node_modules/, loaders: ["babel-loader"]},

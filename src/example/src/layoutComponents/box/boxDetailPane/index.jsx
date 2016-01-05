@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import LayoutActions from '../../../../../actions/LayoutActions';
+import LayoutActions from '../../../../../core/actions/LayoutActions';
 import { Button, Input, Tabs, Tab } from 'react-bootstrap';
 import StyleButton from './styleButton';
 import './detailPane.scss';

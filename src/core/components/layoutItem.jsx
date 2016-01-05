@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
 import { DropTarget } from 'react-dnd';
-import connectToStores from '../../../../node_modules/alt/utils/connectToStores';
-import LayoutStore from '../../../stores/LayoutStore';
-import LayoutActions from '../../../actions/LayoutActions';
+import connectToStores from '../../../node_modules/alt/utils/connectToStores';
+import LayoutStore from '../stores/LayoutStore';
+import LayoutActions from '../actions/LayoutActions';
 import HoverButtons from './hoverButtons/index';
 import childOwner from './childOwner';
 

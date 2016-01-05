@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
-import Draggable from './../layoutComponents/draggable';
-import TitleTextComponent from './../layoutComponents/titleText';
+import Draggable from '../../layoutComponents/draggable';
+import TitleTextComponent from '../../layoutComponents/titleText';
 import './dragMenu.scss';
 
 class Home extends Component {

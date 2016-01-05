@@ -2,8 +2,8 @@ import _ from 'lodash';
 import React, { Component, PropTypes} from 'react';
 import classNames from 'classnames';
 import './box.scss';
-import layoutItem from './../../core/layoutItem';
-import DetailPaneActions from '../../../../actions/DetailPaneActions';
+import layoutItem from './../../../../core/components/layoutItem';
+import DetailPaneActions from '../../../../core/actions/DetailPaneActions';
 import BoxDetailPane from './boxDetailPane';
 
 @layoutItem('BOX')
