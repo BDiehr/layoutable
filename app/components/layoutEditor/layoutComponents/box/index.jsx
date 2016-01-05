@@ -1,6 +1,6 @@
 import _ from 'lodash';
+import HoverButtons from './../../core/hoverButtons/index';
 import React, { Component, PropTypes} from 'react';
-import InternalBox from './internalBox';
 import './box.scss';
 import layoutItem from './../../core/layoutItem';
 
@@ -55,29 +55,35 @@ class Box extends Component {
     );
   };
 
+  renderChildren() {
+    const { id, getCounter, children } = this.props;
+    if (id === 'root' && children.length === 0) {
+      return <div className="intro-text">Hover Over Me To See Options!</div>;
+    } else {
+      return children.map((child, i) => React.cloneElement(child, {
+        number: i,
+        getCounter: getCounter,
+      }));
+    }
+  }
+
   render() {
-    const {
-      isHoveredChild,
-      id,
-      removeChild,
-      getCounter,
-      children,
-      onClick,
-      style,
-    } = this.props;
+    const { style, onClick, removeChild, isHoveredChild, id } = this.props;
 
     return (
-      <InternalBox
-        isHoveredChild={isHoveredChild}
-        addItem={this.addItem}
-        removeChild={removeChild}
+      <div
         onClick={onClick}
-        id={id}
         style={style}
-        getCounter={getCounter}
+        className="layout-item"
         >
-        {children}
-      </InternalBox>
+        {isHoveredChild ? (
+          <HoverButtons
+            addChild={this.addItem}
+            removeChild={id !== 'root' ? removeChild : undefined}
+            />
+        ) : null}
+        {this.renderChildren()}
+      </div>
     );
   }
 }
