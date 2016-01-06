@@ -5,3 +5,17 @@
   background: #f9f9f9;
   border: 3px lightgray solid;
 }
+
+.drag-menu__box {
+  background: red;
+  min-height: 30px;
+  display: flex;
+  align-items: stretch;
+
+  * div > {
+    height: 100%;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}

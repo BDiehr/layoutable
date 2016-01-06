@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
-import Draggable from '../../layoutComponents/draggable';
-import TitleTextComponent from '../../layoutComponents/titleText';
 import './dragMenu.scss';
+/** Layout Items */
+import Box from '../../layoutComponents/box';
 
 class Home extends Component {
   render() {
@@ -10,8 +10,7 @@ class Home extends Component {
         <h2 className="text-center">Drag Menu</h2>
         <sub className="text-center">(drag a component to the editor)</sub>
         <hr />
-        <Draggable />
-        <TitleTextComponent />
+        <Box inDragMenu />
       </div>
     );
   }

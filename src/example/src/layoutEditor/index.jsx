@@ -64,7 +64,7 @@ class LayoutEditor extends Component {
           </div>
           <Container>
             <DragMenu />
-            <Box getCounter={this.getCounter} number={1} id="root" depth={0}/>
+            <Box className="drag-menu__box" getCounter={this.getCounter} number={1} id="root" depth={0}/>
           </Container>
           <DetailPane
             selectedId={selectedId}

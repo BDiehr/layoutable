@@ -1,24 +1,51 @@
 import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';
-import { DropTarget } from 'react-dnd';
+import { DropTarget, DragSource } from 'react-dnd';
 import connectToStores from '../../../node_modules/alt/utils/connectToStores';
 import LayoutStore from '../stores/LayoutStore';
 import LayoutActions from '../actions/LayoutActions';
 import HoverButtons from './hoverButtons/index';
 import childOwner from './childOwner';
 
-function layoutItemCreator(itemType) {
+/**
+ * React Drag n Drop Decorator Functions
+ */
+
+
+function layoutItemCreator(itemType, options) {
+  const layoutItemSource = {
+    beginDrag() {
+      return { item: 'box' };
+    },
+
+    endDrag(props, monitor) {
+      const dropResult = monitor.getDropResult();
+      if (dropResult) {
+        console.log({ props, dropResult });
+        const { addChild, getCounter, id, depth, removeChildFromTop } = dropResult;
+        const deleteChild = (childId) => () => removeChildFromTop(childId);
+        options.addItem({addChild, deleteChild, getCounter, id, depth})();
+      }
+    },
+  };
+
+  const layoutItemTarget = {
+    drop(props, monitor) {
+      const hasDroppedOnChild = monitor.didDrop() && monitor.isOver({ shallow: true });
+      return hasDroppedOnChild === undefined
+        ? undefined
+        : props;
+    },
+  };
+
+  // TODO: Make root not draggable
   return function layoutItem(Spec, ReactComponent = Spec) {
-    const boxTarget = {
-      drop(props, monitor) {
-        const hasDroppedOnChild = monitor.didDrop() && monitor.isOver({ shallow: true });
-        return hasDroppedOnChild === undefined
-          ? undefined
-          : { id: props.id, addChild: props.addChild };
-      },
-    };
     @childOwner()
-    @DropTarget(itemType, boxTarget, (connect, monitor) => ({
+    @DragSource('BOX', layoutItemSource, (connect, monitor) => ({
+      connectDragSource: connect.dragSource(),
+      isDragging: monitor.isDragging(),
+    }))
+    @DropTarget(itemType, layoutItemTarget, (connect, monitor) => ({
       connectDropTarget: connect.dropTarget(),
       isOver: monitor.isOver(),
       isOverCurrent: monitor.isOver({ shallow: true }),
@@ -26,6 +53,14 @@ function layoutItemCreator(itemType) {
     @connectToStores
     class ItemConnection extends Component {
       static propTypes = {
+        /** React-dnd related */
+        connectDragSource: PropTypes.func.isRequired,
+        connectDropTarget: PropTypes.func.isRequired,
+        isDragging: PropTypes.bool.isRequired,
+        isOver: PropTypes.bool.isRequired,
+        isOverCurrent: PropTypes.bool.isRequired,
+        /** Misc */
+        inDragMenu: PropTypes.bool,
         isHovered: PropTypes.bool.isRequired,
         isHoveredLeaf: PropTypes.bool.isRequired,
         registerHoverState: PropTypes.func,
@@ -34,12 +69,15 @@ function layoutItemCreator(itemType) {
         id: PropTypes.string.isRequired,
         parentId: PropTypes.string,
         markToDelete: PropTypes.func,
-        connectDropTarget: PropTypes.func.isRequired,
         childItems: PropTypes.any,
         addChild: PropTypes.func.isRequired,
         removeChildFromTop: PropTypes.func.isRequired,
         onMouseEnter: PropTypes.func.isRequired,
         onMouseLeave: PropTypes.func.isRequired,
+      };
+
+      static defaultProps = {
+        inDragMenu: false,
       };
 
       state = {
@@ -82,23 +120,17 @@ function layoutItemCreator(itemType) {
         return this.props.selectedId != null && this.props.id === this.props.selectedId;
       };
 
-      deleteChild = (id) => {
-        return () => {
-          this.props.removeChildFromTop(id);
-        };
-      };
-
       removeChild = () => {
         const markToDelete = this.props.markToDelete;
         if (markToDelete) markToDelete();
       };
 
       updateStyle = (style) => {
-        this.setState({ style });
+        if (!this.props.inDragMenu) this.setState({ style });
       };
 
       selectItem = () => {
-        LayoutActions.selectItem({ id: this.props.id, style: this.state.style });
+        if (!this.props.inDragMenu) LayoutActions.selectItem({ id: this.props.id, style: this.state.style });
       };
 
       createHoverMenu = ({ addChild, removeChild }) => {
@@ -112,22 +144,21 @@ function layoutItemCreator(itemType) {
       };
 
       render() {
-        const { connectDropTarget, addChild, isHoveredLeaf } = this.props;
+        const { connectDropTarget, addChild, isHoveredLeaf, inDragMenu } = this.props;
         const containerClasses = classNames('layout-item-container', {
           'layout-item-container--selected': this.isSelected(),
         });
-        return connectDropTarget(
+        return (
           <div
             onMouseEnter={this.props.onMouseEnter}
             onMouseLeave={this.props.onMouseLeave}
             className={containerClasses}
             >
-            {isHoveredLeaf && this.state.hoverMenu != null ? this.state.hoverMenu : null}
+            {!inDragMenu && isHoveredLeaf && this.state.hoverMenu != null ? this.state.hoverMenu : null}
             <ReactComponent
               createHoverMenu={this.createHoverMenu}
               onClick={this.onClick}
               updateStyle={this.updateStyle}
-              deleteChild={this.deleteChild}
               removeChild={this.removeChild}
               isSelected={this.isSelected()}
               addChild={addChild}

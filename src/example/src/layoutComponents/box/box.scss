@@ -8,6 +8,7 @@
   font-size: 2em;
 }
 
+
 .layout-item-container {
   margin: 1em;
   display: flex;
@@ -39,6 +40,22 @@
       background: #dcf3ed;
       border-style: dashed;
     }
+  }
+
+  &--in-drag-menu {
+    height: 40px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__drag-menu-title {
+    width: 100%;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: gray;
+    padding: 0.2em;
   }
 }
 

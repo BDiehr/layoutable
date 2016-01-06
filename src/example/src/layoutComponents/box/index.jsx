@@ -6,7 +6,24 @@ import layoutItem from './../../../../core/components/layoutItem';
 import DetailPaneActions from '../../../../core/actions/DetailPaneActions';
 import BoxDetailPane from './boxDetailPane';
 
-@layoutItem('BOX')
+const addBox = ({addChild, deleteChild, getCounter, id, depth}) => {
+  return () => {
+    const itemId = `item-depth-${depth + 1}-num-${getCounter()}`;
+    addChild(
+      <Box
+        key={itemId}
+        id={itemId}
+        depth={depth + 1}
+        parentId={id}
+        markToDelete={deleteChild(itemId)}
+        />
+    );
+  };
+};
+
+@layoutItem('BOX', {
+  addItem: addBox,
+})
 class Box extends Component {
   static propTypes = {
     children: PropTypes.any,
@@ -23,15 +40,18 @@ class Box extends Component {
     getCounter: PropTypes.func.isRequired,
     addChild: PropTypes.func.isRequired,
     removeChild: PropTypes.func.isRequired,
-    deleteChild: PropTypes.func.isRequired,
     updateStyle: PropTypes.func.isRequired,
     onClick: PropTypes.func.isRequired,
     createHoverMenu: PropTypes.func.isRequired,
+    connectDragSource: PropTypes.func.isRequired,
+    connectDropTarget: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
     const { createHoverMenu, removeChild } = this.props;
-    createHoverMenu({ removeChild, addChild: this.addBox });
+    createHoverMenu({
+      removeChild,
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -44,19 +64,6 @@ class Box extends Component {
       DetailPaneActions.selectPane(<BoxDetailPane />);
     }
   }
-
-  addBox = () => {
-    const itemId = `item-depth-${this.props.depth + 1}-num-${this.props.getCounter()}`;
-    this.props.addChild(
-      <Box
-        key={itemId}
-        id={itemId}
-        depth={this.props.depth + 1}
-        parentId={this.props.id}
-        markToDelete={this.props.deleteChild(itemId)}
-        />
-    );
-  };
 
   renderChildren() {
     const { id, getCounter, children } = this.props;
@@ -72,20 +79,22 @@ class Box extends Component {
   }
 
   render() {
-    const { style, onClick } = this.props;
+    const { style, onClick, connectDragSource, connectDropTarget, inDragMenu } = this.props;
     const classes = classNames('layout-item', {
       'layout-item--selected': this.props.isSelected,
+      'layout-item--in-drag-menu': inDragMenu,
     });
 
-    return (
+    return connectDropTarget(connectDragSource(
       <div
         onClick={onClick}
         style={style}
         className={classes}
         >
+        { inDragMenu ? <span className="layout-item__drag-menu-title">Box</span> : null }
         {this.renderChildren()}
       </div>
-    );
+    ));
   }
 }
 
