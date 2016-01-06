@@ -28,6 +28,7 @@ class Box extends Component {
   static propTypes = {
     children: PropTypes.any,
     style: PropTypes.object.isRequired,
+    inDragMenu: PropTypes.bool.isRequired,
     isSelected: PropTypes.bool.isRequired,
     isOver: PropTypes.bool.isRequired,
     depth: PropTypes.number.isRequired,
@@ -49,9 +50,7 @@ class Box extends Component {
 
   componentDidMount() {
     const { createHoverMenu, removeChild } = this.props;
-    createHoverMenu({
-      removeChild,
-    });
+    createHoverMenu({ removeChild });
   }
 
   componentDidUpdate(prevProps) {

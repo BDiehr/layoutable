@@ -1,8 +1,18 @@
-
-.directions {
-  padding: 0 1em;
+html, body {
+  margin: 0;
+  padding: 0;
 }
 
+.title {
+  color: gray;
+  padding-right: 1em;
+}
+
+.title-container {
+  height: 100%;
+  margin: 0;
+  padding-left: 60px;
+}
 .green-example {
   font-size: 130%;
   color: #dcf3ed;

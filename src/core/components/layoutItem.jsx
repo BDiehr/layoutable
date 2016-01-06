@@ -21,7 +21,6 @@ function layoutItemCreator(itemType, options) {
     endDrag(props, monitor) {
       const dropResult = monitor.getDropResult();
       if (dropResult) {
-        console.log({ props, dropResult });
         const { addChild, getCounter, id, depth, removeChildFromTop } = dropResult;
         const deleteChild = (childId) => () => removeChildFromTop(childId);
         options.addItem({addChild, deleteChild, getCounter, id, depth})();
@@ -144,7 +143,7 @@ function layoutItemCreator(itemType, options) {
       };
 
       render() {
-        const { connectDropTarget, addChild, isHoveredLeaf, inDragMenu } = this.props;
+        const { addChild, isHoveredLeaf, inDragMenu } = this.props;
         const containerClasses = classNames('layout-item-container', {
           'layout-item-container--selected': this.isSelected(),
         });

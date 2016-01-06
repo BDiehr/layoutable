@@ -52,31 +52,23 @@ class LayoutEditor extends Component {
     const { selectedId, styleMap, HTMLTree, detailPane, selectedStyle } = this.props;
     return (
       <div>
-        <div className="body">
-          <h1 className="text-center"><strong>Layoutable</strong></h1>
-          <hr />
-          <div className="directions">
-            <h4>Directions</h4>
-            <ol>
-              <li>Hover over a box to see the controls to add child elements, select or remove (if it's not the root element).</li>
-              <li>A selected <span className="green-example">green</span> box can be modified by the control panel below.</li>
-            </ol>
-          </div>
-          <Container>
-            <DragMenu />
-            <Box className="drag-menu__box" getCounter={this.getCounter} number={1} id="root" depth={0}/>
-          </Container>
-          <DetailPane
-            selectedId={selectedId}
-            selectedStyle={selectedStyle}
-            >
-            {detailPane}
-          </DetailPane>
-          <CodeViewer
-            HTMLTree={HTMLTree}
-            styleMap={styleMap}
-            />
+        <div className="title-container">
+          <h1 className="title"><strong>Layoutable</strong></h1>
         </div>
+        <Container>
+          <DragMenu />
+          <Box className="drag-menu__box" getCounter={this.getCounter} number={1} id="root" depth={0}/>
+        </Container>
+        <DetailPane
+          selectedId={selectedId}
+          selectedStyle={selectedStyle}
+          >
+          {detailPane}
+        </DetailPane>
+        <CodeViewer
+          HTMLTree={HTMLTree}
+          styleMap={styleMap}
+          />
       </div>
     );
   }
